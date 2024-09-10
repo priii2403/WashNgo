@@ -48,7 +48,9 @@ const HomeScreen = ({navigation}) => {
         <View style={styles.logoContainer}>
           <Image source={require('../Assets/logo.png')} style={styles.logo} />
         </View>
-        <Text style={styles.title}>{`Welcome ${user.name}`}</Text>
+        <Text style={styles.title}>{`Welcome ${
+          user?.name ? user?.name : ''
+        }`}</Text>
         <TouchableOpacity onPress={handleLogout}>
           <View
             style={{

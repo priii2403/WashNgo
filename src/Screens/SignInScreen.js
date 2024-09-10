@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ const validationSchema = yup.object().shape({
 });
 
 const SignInScreen = ({navigation}) => {
+  const formRef = useRef();
   const setUser = useAuthStore(state => state.setUser);
   const handleLogin = async values => {
     try {
@@ -50,6 +51,7 @@ const SignInScreen = ({navigation}) => {
       const data = await response.json();
       console.log('Login successful:', data);
       setUser(data.data);
+      formRef?.current?.resetForm();
       navigation.navigate('HomeScreen');
       // Handle successful login here, e.g., navigation or storing tokens
     } catch (error) {
@@ -75,6 +77,7 @@ const SignInScreen = ({navigation}) => {
         <Formik
           initialValues={{phone: '', password: ''}}
           validationSchema={validationSchema}
+          innerRef={formRef}
           onSubmit={values => {
             // Handle form submission
             handleLogin(values);
