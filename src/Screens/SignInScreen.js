@@ -190,20 +190,24 @@ const SignInScreen = ({navigation}) => {
                   {
                     width: Metrics.rfv(200),
                     height: Metrics.rfv(120),
-                    bottom: -20,
+                    bottom: -30,
                   },
                 ]}
               />
               <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                  Don’t have an account?{' '}
+                <View style={{flexDirection: 'row', marginTop: Metrics.rfv(5)}}>
+                  <Text style={styles.signInText}>
+                    {' '}
+                    Don’t have an account?{' '}
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('SignUpScreen');
                     }}>
-                    <Text style={styles.signUpLink}>Sign Up</Text>
+                    <Text style={styles.signInText1}>Sign Up </Text>
                   </TouchableOpacity>
-                </Text>
+                </View>
+
                 <Text style={styles.footerText1}>
                   By login or sign up, you agree to our terms of use and privacy
                   policy
@@ -231,6 +235,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  signInText1: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    fontSize: 12,
+    color: 'black', // Make sign-in text blue to look like a link
   },
   title: {
     fontSize: Metrics.rfv(21),
@@ -310,14 +320,18 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
-    marginTop: Metrics.rfv(20),
+    marginTop: Metrics.rfv(10),
   },
   footerText: {
     fontSize: Metrics.rfv(12),
     color: 'black',
   },
   signUpLink: {
-    color: '#A3CFFF',
+    color: 'black',
+    // fontSize: Metrics.rfv(10),
+    marginTop: Metrics.rfv(0),
+
+    textDecorationLine: 'underline',
   },
   footerText1: {
     fontSize: Metrics.rfv(12),

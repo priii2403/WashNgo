@@ -215,15 +215,19 @@ const SignUpScreen = ({navigation}) => {
                 ]}
               />
               <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                  Already have an account?{' '}
+                <View
+                  style={{flexDirection: 'row', marginTop: Metrics.rfv(16)}}>
+                  <Text style={styles.signInText}>
+                    Already have an account?{' '}
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('SignInScreen');
                     }}>
-                    <Text style={styles.signUpLink}>Sign In</Text>
+                    <Text style={styles.signInText1}>Sign Up </Text>
                   </TouchableOpacity>
-                </Text>
+                </View>
+
                 <Text style={styles.footerText1}>
                   By logging in or signing up, you agree to our terms of use and
                   privacy policy
@@ -241,6 +245,12 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     marginTop: Metrics.rfv(10),
+  },
+  signInText1: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    fontSize: 12,
+    color: 'black', // Make sign-in text blue to look like a link
   },
   logo: {
     width: width * 0.6,
@@ -266,6 +276,7 @@ const styles = StyleSheet.create({
     paddingVertical: Metrics.rfv(15),
     fontWeight: 'bold',
     paddingHorizontal: Metrics.rfv(60),
+    textDecorationLine: 'underline',
   },
   subtitle: {
     fontSize: Metrics.rfv(14),
@@ -323,7 +334,8 @@ const styles = StyleSheet.create({
   },
   signUpLink: {
     fontSize: Metrics.rfv(14),
-    color: '#A3CFFF',
+    color: '#808080',
+    fontWeight: 'bold',
   },
   footerText1: {
     fontSize: Metrics.rfv(12),
