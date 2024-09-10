@@ -49,22 +49,27 @@ const OnBoardingScreen = ({navigation}) => {
         <Text style={styles.headingText}>
           Sparkle & Shine Transform Your Drive with Every Wash!
         </Text>
-        <View
-          style={{
-            borderRadius: Metrics.rfv(30),
-            backgroundColor: '#A3CFFF',
-            alignItems: 'center',
-            marginTop: Metrics.rfv(20),
-            // iOS shadow properties
-            shadowColor: '#000', // Shadow color
-            shadowOffset: {width: 0, height: 4}, // Shadow offset
-            shadowOpacity: 0.3, // Shadow opacity
-            shadowRadius: 6, // Shadow blur radius
-            // Android elevation
-            elevation: 6, // Elevation for shadow effect on Android
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SignInScreen');
           }}>
-          <Text style={styles.subText}>Let’s Start</Text>
-        </View>
+          <View
+            style={{
+              borderRadius: Metrics.rfv(30),
+              backgroundColor: '#A3CFFF',
+              alignItems: 'center',
+              marginTop: Metrics.rfv(20),
+              // iOS shadow properties
+              shadowColor: '#000', // Shadow color
+              shadowOffset: {width: 0, height: 4}, // Shadow offset
+              shadowOpacity: 0.3, // Shadow opacity
+              shadowRadius: 6, // Shadow blur radius
+              // Android elevation
+              elevation: 6, // Elevation for shadow effect on Android
+            }}>
+            <Text style={styles.subText}>Let’s Start</Text>
+          </View>
+        </TouchableOpacity>
         <View style={{flexDirection: 'row', marginTop: Metrics.rfv(16)}}>
           <Text style={styles.signInText}>Already have an account? </Text>
           <TouchableOpacity

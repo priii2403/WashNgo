@@ -6,6 +6,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Alert,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -49,11 +50,16 @@ const SignInScreen = ({navigation}) => {
       }
 
       const data = await response.json();
-      console.log('Login successful:', data);
-      setUser(data.data);
+      console.log(data.data);
+      if (data?.data) {
+        // If login is successful, show alert
+        Alert.alert('Login Success', 'You have Login successfully!');
+        navigation.navigate('HomeScreen');
+      } else {
+        Alert.alert('Login Failed', 'Invalid phone or password.');
+      }
+      setUser(data.data.status);
       formRef?.current?.resetForm();
-      navigation.navigate('HomeScreen');
-      // Handle successful login here, e.g., navigation or storing tokens
     } catch (error) {
       console.error('Error during login:', error);
       // Handle errors here, e.g., show error message to user

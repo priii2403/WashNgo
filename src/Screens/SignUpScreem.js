@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {Formik} from 'formik';
@@ -54,6 +55,21 @@ const SignUpScreen = ({navigation}) => {
       }
 
       const data = await response.json();
+      if (response?.data?.status) {
+        // If login is successful, show alert
+        Alert.alert('SignUp Success', 'You have SignUp in successfully!', [
+          {
+            text: 'OK',
+            onPress: () => console.log('OK Pressed'),
+          },
+        ]);
+
+        // After successful submission, reset the form
+        resetForm();
+      } else {
+        // Handle login failure
+        Alert.alert('Login Failed', 'Invalid phone or password.');
+      }
       console.log('Success:', data);
       navigation.navigate('SignInScreen');
       // Navigate to another screen or handle success state
@@ -303,7 +319,7 @@ const styles = StyleSheet.create({
   input: {
     height: Metrics.rfv(40),
     borderRadius: Metrics.rfv(5),
-    paddingHorizontal: Metrics.rfv(10),
+    paddingHorizontal: Metrics.rfv(15),
   },
   errorText: {
     color: 'red',
