@@ -172,7 +172,7 @@ const SignUpScreen = ({navigation}) => {
               </View>
 
               <TouchableOpacity style={styles.forgotPasswordContainer}>
-                <CheckBox
+                {/* <CheckBox
                   containerStyle={{
                     margin: 0,
                     width: 5,
@@ -181,7 +181,8 @@ const SignUpScreen = ({navigation}) => {
                   }}
                   checked={checked}
                   onPress={() => setChecked(!checked)}
-                />
+                /> */}
+                <Image source={require('../Assets/rec.png')} style={{}} />
                 <Text style={styles.forgotPasswordText}>Agree with</Text>
                 <Text style={styles.forgotPasswordText1}>
                   Terms & conditions
