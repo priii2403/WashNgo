@@ -32,6 +32,7 @@ const validationSchema = yup.object().shape({
 const SignInScreen = ({navigation}) => {
   const formRef = useRef();
   const setUser = useAuthStore(state => state.setUser);
+
   const handleLogin = async values => {
     try {
       const response = await fetch('https://tor.appdevelopers.mobi/api/login', {
@@ -65,14 +66,10 @@ const SignInScreen = ({navigation}) => {
       // Handle errors here, e.g., show error message to user
     }
   };
+
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingBottom: Metrics.rfv(10),
-      }}>
-      <View style={{flex: 1, backgroundColor: 'white'}}>
+    <ScrollView style={{backgroundColor: 'white'}}>
+      <View style={styles.container}>
         <View style={styles.logoContainer}>
           <Image source={require('../Assets/logo.png')} style={styles.logo} />
         </View>
@@ -84,10 +81,7 @@ const SignInScreen = ({navigation}) => {
           initialValues={{phone: '', password: ''}}
           validationSchema={validationSchema}
           innerRef={formRef}
-          onSubmit={values => {
-            // Handle form submission
-            handleLogin(values);
-          }}>
+          onSubmit={values => handleLogin(values)}>
           {({
             handleChange,
             handleBlur,
@@ -99,16 +93,11 @@ const SignInScreen = ({navigation}) => {
             <View style={styles.formContainer}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Phone</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderWidth: 1,
-                    borderColor: '#808080',
-                    borderRadius: Metrics.rfv(8),
-                    paddingHorizontal: Metrics.rfv(5),
-                  }}>
-                  <Image source={require('../Assets/mail.png')} style={{}} />
+                <View style={styles.inputWrapper}>
+                  <Image
+                    source={require('../Assets/mail.png')}
+                    style={styles.icon}
+                  />
                   <TextInput
                     style={styles.input}
                     onChangeText={handleChange('phone')}
@@ -125,16 +114,11 @@ const SignInScreen = ({navigation}) => {
 
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Password</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderWidth: 1,
-                    borderColor: '#808080',
-                    borderRadius: Metrics.rfv(8),
-                    paddingHorizontal: Metrics.rfv(5),
-                  }}>
-                  <Image source={require('../Assets/lock.png')} style={{}} />
+                <View style={styles.inputWrapper}>
+                  <Image
+                    source={require('../Assets/lock.png')}
+                    style={styles.icon}
+                  />
                   <TextInput
                     style={styles.input}
                     onChangeText={handleChange('password')}
@@ -154,69 +138,40 @@ const SignInScreen = ({navigation}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{
-                  borderRadius: Metrics.rfv(30),
-                  backgroundColor: '#A3CFFF',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {width: 0, height: 4},
-                  shadowOpacity: 0.3,
-                  shadowRadius: 6,
-                  elevation: 6,
-                }}
+                style={styles.signInButton}
                 onPress={handleSubmit}>
                 <Text style={styles.subText}>Sign In</Text>
               </TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginTop: Metrics.rfv(10),
-                }}>
-                <Text>----------</Text>
-                <Text style={{paddingHorizontal: Metrics.rfv(3)}}>or</Text>
-                <Text>----------</Text>
+
+              <View style={styles.dividerContainer}>
+                <Text style={{color: 'black'}}>-------------------</Text>
+                <Text style={styles.dividerText}>or</Text>
+                <Text style={{color: 'black'}}>-------------------</Text>
               </View>
 
               <View style={styles.iconContainer}>
                 <TouchableOpacity style={styles.iconButton}>
                   <Image
                     source={require('../Assets/Goggle.png')}
-                    style={styles.icon}
+                    style={styles.socialIcon}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButton}>
                   <Image
                     source={require('../Assets/apple.png')}
-                    style={styles.icon}
+                    style={styles.socialIcon}
                   />
                 </TouchableOpacity>
               </View>
-              <Image
-                source={require('../Assets/belowSideRight.png')}
-                style={[
-                  styles.bottomRight,
-                  {
-                    width: Metrics.rfv(200),
-                    height: Metrics.rfv(120),
-                    bottom: -30,
-                  },
-                ]}
-              />
+
               <View style={styles.footer}>
-                <View style={{flexDirection: 'row', marginTop: Metrics.rfv(5)}}>
-                  <Text style={styles.signInText}>
-                    {' '}
-                    Don’t have an account?{' '}
-                  </Text>
+                <View style={styles.signUpContainer}>
+                  <Text style={styles.signInText}>Don’t have an account? </Text>
                   <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('SignUpScreen');
-                    }}>
+                    onPress={() => navigation.navigate('SignUpScreen')}>
                     <Text style={styles.signInText1}>Sign Up </Text>
                   </TouchableOpacity>
                 </View>
-
                 <Text style={styles.footerText1}>
                   By login or sign up, you agree to our terms of use and privacy
                   policy
@@ -231,71 +186,66 @@ const SignInScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   logoContainer: {
     alignItems: 'center',
-    marginTop: Metrics.rfv(10),
+    marginTop: Metrics.rfv(20), // Adjusted margin for responsiveness
   },
   logo: {
-    width: width * 0.6,
-    height: width * 0.333,
+    width: '120%', // Responsive width
+    height: undefined,
+    aspectRatio: 3 / 1, // Maintain aspect ratio for logo
     resizeMode: 'contain',
   },
-  bottomRight: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-  signInText1: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-    fontSize: 12,
-    color: 'black', // Make sign-in text blue to look like a link
-  },
   title: {
-    fontSize: Metrics.rfv(21),
-    fontFamily: 'Poppins-Black',
+    fontSize: Metrics.rfv(21), // Responsive title font size
     fontWeight: '700',
     color: 'black',
     paddingHorizontal: Metrics.rfv(10),
     marginTop: Metrics.rfv(10),
-    textAlign: 'start',
-  },
-  subText: {
-    fontSize: 16,
-    paddingVertical: Metrics.rfv(15),
-    fontWeight: 'bold',
-    paddingHorizontal: Metrics.rfv(60),
+    textAlign: 'left',
+    marginLeft: Metrics.rfv(10),
   },
   subtitle: {
     fontSize: Metrics.rfv(16),
-    fontFamily: 'Poppins-Black',
     fontWeight: '400',
     color: '#808080',
     paddingHorizontal: Metrics.rfv(10),
-    textAlign: 'start',
     marginTop: Metrics.rfv(5),
+    marginLeft: Metrics.rfv(10),
   },
   subtitle1: {
     fontSize: Metrics.rfv(16),
-    fontFamily: 'Poppins-Black',
     fontWeight: '400',
     color: '#808080',
     paddingHorizontal: Metrics.rfv(10),
-    textAlign: 'start',
+    marginLeft: Metrics.rfv(10),
   },
   formContainer: {
     marginTop: Metrics.rfv(20),
     paddingHorizontal: Metrics.rfv(20),
   },
   inputContainer: {
-    marginBottom: Metrics.rfv(10),
+    marginBottom: Metrics.rfv(15),
   },
   label: {
     fontSize: Metrics.rfv(14),
     color: 'black',
     marginBottom: Metrics.rfv(5),
   },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#808080',
+    borderRadius: Metrics.rfv(8),
+    paddingHorizontal: Metrics.rfv(5),
+  },
   input: {
+    flex: 1,
     height: Metrics.rfv(40),
     borderRadius: Metrics.rfv(5),
     paddingHorizontal: Metrics.rfv(10),
@@ -310,42 +260,68 @@ const styles = StyleSheet.create({
     marginBottom: Metrics.rfv(20),
   },
   forgotPasswordText: {
-    color: 'black',
     fontSize: Metrics.rfv(14),
+    color: 'black',
     textDecorationLine: 'underline',
+  },
+  signInButton: {
+    borderRadius: Metrics.rfv(30),
+    backgroundColor: '#A3CFFF',
+    alignItems: 'center',
+    paddingVertical: Metrics.rfv(15),
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  subText: {
+    fontSize: Metrics.rfv(16),
+    fontWeight: 'bold',
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: Metrics.rfv(20),
+  },
+  dividerText: {
+    fontSize: Metrics.rfv(14),
+    color: 'black',
+    marginHorizontal: Metrics.rfv(10),
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: Metrics.rfv(20),
+    marginVertical: Metrics.rfv(20),
   },
   iconButton: {
     marginHorizontal: Metrics.rfv(10),
   },
-  icon: {
+  socialIcon: {
     width: Metrics.rfv(30),
     height: Metrics.rfv(30),
     resizeMode: 'contain',
   },
   footer: {
     alignItems: 'center',
-    marginTop: Metrics.rfv(10),
+    marginTop: Metrics.rfv(20),
   },
-  footerText: {
-    fontSize: Metrics.rfv(12),
+  signUpContainer: {
+    flexDirection: 'row',
+    marginBottom: Metrics.rfv(20),
+  },
+  signInText: {
+    fontSize: Metrics.rfv(14),
     color: 'black',
   },
-  signUpLink: {
-    color: 'black',
-    // fontSize: Metrics.rfv(10),
-    marginTop: Metrics.rfv(0),
-
-    textDecorationLine: 'underline',
+  signInText1: {
+    fontSize: Metrics.rfv(14),
+    color: '#A3CFFF',
   },
   footerText1: {
     fontSize: Metrics.rfv(12),
-    color: '#808080',
     textAlign: 'center',
+    color: '#808080',
   },
 });
 
