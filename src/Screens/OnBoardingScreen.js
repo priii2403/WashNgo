@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import CustomButton from '../Components/CustomButton';
 
 import Metrics from '../Helpers/Metrics';
 
@@ -49,27 +50,12 @@ const OnBoardingScreen = ({navigation}) => {
         <Text style={styles.headingText}>
           Sparkle & Shine Transform Your Drive with Every Wash!
         </Text>
-        <TouchableOpacity
+        <CustomButton
+          title="Let’s Start"
           onPress={() => {
             navigation.navigate('SignInScreen');
-          }}>
-          <View
-            style={{
-              borderRadius: Metrics.rfv(30),
-              backgroundColor: '#A3CFFF',
-              alignItems: 'center',
-              marginTop: Metrics.rfv(20),
-              // iOS shadow properties
-              shadowColor: '#000', // Shadow color
-              shadowOffset: {width: 0, height: 4}, // Shadow offset
-              shadowOpacity: 0.3, // Shadow opacity
-              shadowRadius: 6, // Shadow blur radius
-              // Android elevation
-              elevation: 6, // Elevation for shadow effect on Android
-            }}>
-            <Text style={styles.subText}>Let’s Start</Text>
-          </View>
-        </TouchableOpacity>
+          }}
+        />
         <View style={{flexDirection: 'row', marginTop: Metrics.rfv(16)}}>
           <Text style={styles.signInText}>Already have an account? </Text>
           <TouchableOpacity
@@ -91,6 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -132,13 +119,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.rfv(60),
   },
   signInText: {
-    fontSize: 12,
+    fontSize: Metrics.rfv(14),
     color: '#808080', // Make sign-in text blue to look like a link
   },
   signInText1: {
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    fontSize: 12,
+    fontSize: Metrics.rfv(14),
     color: 'black', // Make sign-in text blue to look like a link
   },
   cornerImage: {
@@ -151,7 +138,7 @@ const styles = StyleSheet.create({
   },
   topRight: {
     top: 0,
-    right: -30,
+    right: -50,
   },
 });
 

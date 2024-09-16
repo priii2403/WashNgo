@@ -14,6 +14,11 @@ import {Formik} from 'formik';
 import Metrics from '../Helpers/Metrics';
 import * as yup from 'yup';
 import useAuthStore from '../store/AuthStore';
+import PasswordInput from '../Components/PasswordInput';
+
+import CustomButton from '../Components/CustomButton';
+import {Colors} from '../Helpers/Colors';
+import {appHitSlop} from '../constant/data';
 
 const {width, height} = Dimensions.get('window');
 
@@ -105,6 +110,7 @@ const SignInScreen = ({navigation}) => {
                     value={values.phone}
                     placeholder="Enter your phone"
                     keyboardType="phone-pad"
+                    placeholderTextColor={Colors.grey}
                   />
                 </View>
                 {touched.phone && errors.phone && (
@@ -114,20 +120,11 @@ const SignInScreen = ({navigation}) => {
 
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Password</Text>
-                <View style={styles.inputWrapper}>
-                  <Image
-                    source={require('../Assets/lock.png')}
-                    style={styles.icon}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    placeholder="Enter your password"
-                    secureTextEntry
-                  />
-                </View>
+                <PasswordInput
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  error={touched.password && errors.password}
+                />
                 {touched.password && errors.password && (
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
@@ -137,11 +134,7 @@ const SignInScreen = ({navigation}) => {
                 <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.signInButton}
-                onPress={handleSubmit}>
-                <Text style={styles.subText}>Sign In</Text>
-              </TouchableOpacity>
+              <CustomButton title="Sign In" onPress={handleSubmit} />
 
               <View style={styles.dividerContainer}>
                 <Text style={{color: 'black'}}>-------------------</Text>
@@ -168,6 +161,7 @@ const SignInScreen = ({navigation}) => {
                 <View style={styles.signUpContainer}>
                   <Text style={styles.signInText}>Don’t have an account? </Text>
                   <TouchableOpacity
+                    hitSlop={appHitSlop(10, 10, 10, 10)}
                     onPress={() => navigation.navigate('SignUpScreen')}>
                     <Text style={styles.signInText1}>Sign Up </Text>
                   </TouchableOpacity>
@@ -177,6 +171,17 @@ const SignInScreen = ({navigation}) => {
                   policy
                 </Text>
               </View>
+              <Image
+                source={require('../Assets/belowSideRight.png')}
+                style={[
+                  styles.cornerImage,
+                  styles.bottomRight,
+                  {
+                    width: Metrics.rfv(200), // dynamically set width
+                    height: Metrics.rfv(300), // dynamically set height
+                  },
+                ]}
+              />
             </View>
           )}
         </Formik>
@@ -194,6 +199,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: Metrics.rfv(20), // Adjusted margin for responsiveness
   },
+  bottomRight: {
+    bottom: -160,
+    left: 0,
+  },
   logo: {
     width: '120%', // Responsive width
     height: undefined,
@@ -209,6 +218,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginLeft: Metrics.rfv(10),
   },
+  icon: {
+    marginHorizontal: Metrics.rfv(10),
+  },
   subtitle: {
     fontSize: Metrics.rfv(16),
     fontWeight: '400',
@@ -216,6 +228,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: Metrics.rfv(10),
     marginTop: Metrics.rfv(5),
     marginLeft: Metrics.rfv(10),
+  },
+  cornerImage: {
+    width: width * 0.3, // 20% of screen width for corner images
+    height: width * 0.3,
+    position: 'absolute',
+    resizeMode: 'contain',
+  },
+  bottomLeft: {
+    bottom: -10,
+    left: 0,
   },
   subtitle1: {
     fontSize: Metrics.rfv(16),
@@ -249,6 +271,7 @@ const styles = StyleSheet.create({
     height: Metrics.rfv(40),
     borderRadius: Metrics.rfv(5),
     paddingHorizontal: Metrics.rfv(10),
+    color: Colors.black,
   },
   errorText: {
     color: 'red',
@@ -278,6 +301,7 @@ const styles = StyleSheet.create({
   subText: {
     fontSize: Metrics.rfv(16),
     fontWeight: 'bold',
+    color: Colors.black,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -317,6 +341,7 @@ const styles = StyleSheet.create({
   signInText1: {
     fontSize: Metrics.rfv(14),
     color: '#A3CFFF',
+    position: 'absolute',
   },
   footerText1: {
     fontSize: Metrics.rfv(12),

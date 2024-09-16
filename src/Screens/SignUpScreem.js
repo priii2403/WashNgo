@@ -9,13 +9,18 @@ import {
   Alert,
   TextInput,
   ScrollView,
+  Linking,
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Formik} from 'formik';
 import Metrics from '../Helpers/Metrics';
 import * as yup from 'yup';
 import useAuthStore from '../store/AuthStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Colors} from '../Helpers/Colors';
+import PasswordInput from '../Components/PasswordInput';
+import {appHitSlop, privacy_Policy} from '../constant/data';
+import CustomButton from '../Components/CustomButton';
 const {width, height} = Dimensions.get('window');
 
 // Validation schema for Formik
@@ -30,11 +35,13 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const SignInScreen = ({navigation}) => {
+const SignUpScreen = ({navigation}) => {
   const formRef = useRef();
   const setUser = useAuthStore(state => state.setUser);
+  const [Check, setCheck] = useState(false);
   const [passwordCVisible, setPasswordCVisible] = useState(false);
   const handleSubmit = async values => {
+    console.log('Submitting values:', values);
     try {
       const response = await fetch(
         'https://tor.appdevelopers.mobi/api/register',
@@ -96,7 +103,7 @@ const SignInScreen = ({navigation}) => {
           initialValues={{phone: '', password: '', name: ''}}
           validationSchema={validationSchema}
           innerRef={formRef}
-          onSubmit={values => handleLogin(values)}>
+          onSubmit={values => handleSubmit(values)}>
           {({
             handleChange,
             handleBlur,
@@ -117,12 +124,16 @@ const SignInScreen = ({navigation}) => {
                     borderRadius: Metrics.rfv(8),
                     paddingHorizontal: Metrics.rfv(5),
                   }}>
-                  <Image source={require('../Assets/mail.png')} style={{}} />
+                  <Image
+                    source={require('../Assets/mail.png')}
+                    style={styles.icon}
+                  />
                   <TextInput
                     style={styles.input}
                     onChangeText={handleChange('name')}
                     onBlur={handleBlur('name')}
                     value={values.name}
+                    placeholderTextColor={Colors.grey}
                     placeholder="Enter your name"
                   />
                 </View>
@@ -144,97 +155,53 @@ const SignInScreen = ({navigation}) => {
                     value={values.phone}
                     placeholder="Enter your phone"
                     keyboardType="phone-pad"
+                    placeholderTextColor={Colors.grey}
                   />
                 </View>
                 {touched.phone && errors.phone && (
                   <Text style={styles.errorText}>{errors.phone}</Text>
                 )}
               </View>
-              {/* <View style={styles.passwordContainer}>
-                <TextInput
-                  title=" Password"
-                  placeholder="*****"
-                  placeholderTextColor={Colors.grey}
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  error={touched.password && errors.password}
-                  secureTextEntry={!passwordCVisible}
-                  style={styles.inputStyle}
-                />
+              <Text style={styles.label}>Password</Text>
+              <PasswordInput
+                value={values.password}
+                onChangeText={handleChange('password')}
+                error={touched.password && errors.password}
+                placeholder={'passward'}
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
+
+              <TouchableOpacity style={styles.forgotPasswordContainer}>
                 <TouchableOpacity
-                  onPress={() => setPasswordCVisible(!passwordCVisible)}>
-                  <Icon
-                    name={passwordCVisible ? 'visibility' : 'visibility-off'}
-                    size={24}
-                    color={Colors.grey}
+                  onPress={() => {
+                    setCheck(!Check);
+                  }}>
+                  <MaterialCommunityIcons
+                    name={
+                      Check
+                        ? 'checkbox-marked-outline'
+                        : 'checkbox-blank-outline'
+                    }
+                    size={30}
+                    color={Colors.black}
                     style={{marginRight: Metrics.rfv(10)}}
                   />
                 </TouchableOpacity>
-              </View> */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Password</Text>
-                <View style={styles.inputWrapper}>
-                  <Image
-                    source={require('../Assets/lock.png')}
-                    style={styles.icon}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    placeholder="Enter your password"
-                    secureTextEntry
-                  />
-                </View>
-                {touched.password && errors.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
-                )}
-              </View>
 
-              <TouchableOpacity style={styles.forgotPasswordContainer}>
-                {/* <CheckBox
-                  containerStyle={{
-                    margin: 0,
-                    width: 5,
-                    padding: 0,
-                    marginLeft: 0,
-                  }}
-                  checked={checked}
-                  onPress={() => setChecked(!checked)}
-                /> */}
-                <Image source={require('../Assets/rec.png')} style={{}} />
                 <Text style={styles.forgotPasswordText}>Agree with</Text>
-                <Text style={styles.forgotPasswordText1}>
-                  Terms & conditions
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.signInButton}
-                onPress={handleSubmit}>
-                <Text style={styles.subText}>Sign Up</Text>
-              </TouchableOpacity>
 
-              <View style={styles.dividerContainer}>
-                <Text style={{color: 'black'}}>-------------------</Text>
-                <Text style={styles.dividerText}>or</Text>
-                <Text style={{color: 'black'}}>-------------------</Text>
-              </View>
-
-              <View style={styles.iconContainer}>
-                <TouchableOpacity style={styles.iconButton}>
-                  <Image
-                    source={require('../Assets/Goggle.png')}
-                    style={styles.socialIcon}
-                  />
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(privacy_Policy);
+                  }}>
+                  <Text style={styles.forgotPasswordText1}>
+                    Terms & conditions
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton}>
-                  <Image
-                    source={require('../Assets/apple.png')}
-                    style={styles.socialIcon}
-                  />
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
+              <CustomButton title="Sign Up" onPress={handleSubmit} />
 
               <View style={styles.footer}>
                 <View style={styles.signUpContainer}>
@@ -242,7 +209,9 @@ const SignInScreen = ({navigation}) => {
                     Already have an account?{' '}
                   </Text>
                   <TouchableOpacity
+                    hitSlop={appHitSlop(10, 10, 10, 10)}
                     onPress={() => {
+                      // console.log('insidee');
                       navigation.navigate('SignInScreen');
                     }}>
                     <Text style={styles.signInText1}>Sign In </Text>
@@ -253,6 +222,17 @@ const SignInScreen = ({navigation}) => {
                   policy
                 </Text>
               </View>
+              <Image
+                source={require('../Assets/belowSideLeft.png')}
+                style={[
+                  styles.cornerImage,
+                  styles.bottomRight,
+                  {
+                    width: Metrics.rfv(200), // dynamically set width
+                    height: Metrics.rfv(200), // dynamically set height
+                  },
+                ]}
+              />
             </View>
           )}
         </Formik>
@@ -277,6 +257,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: Metrics.rfv(10),
     // borderColor: Colors.grey,
+  },
+  cornerImage: {
+    width: width * 0.3, // 20% of screen width for corner images
+    height: width * 0.3,
+    position: 'absolute',
+    resizeMode: 'contain',
+  },
+  bottomRight: {
+    bottom: -200,
+    right: 0,
+  },
+  inputStyle: {
+    flex: 1,
+    paddingVertical: Metrics.rfv(10),
+    paddingHorizontal: Metrics.rfv(12),
+    color: Colors.black,
   },
   logo: {
     width: '120%', // Responsive width
@@ -333,6 +329,7 @@ const styles = StyleSheet.create({
     height: Metrics.rfv(40),
     borderRadius: Metrics.rfv(5),
     paddingHorizontal: Metrics.rfv(10),
+    color: Colors.black,
   },
   errorText: {
     color: 'red',
@@ -350,6 +347,7 @@ const styles = StyleSheet.create({
     fontSize: Metrics.rfv(14),
     color: 'black',
     textDecorationLine: 'underline',
+    marginRight: Metrics.rfv(10),
   },
   signInButton: {
     borderRadius: Metrics.rfv(30),
@@ -365,6 +363,7 @@ const styles = StyleSheet.create({
   subText: {
     fontSize: Metrics.rfv(16),
     fontWeight: 'bold',
+    color: Colors.black,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -404,6 +403,9 @@ const styles = StyleSheet.create({
   signInText1: {
     fontSize: Metrics.rfv(14),
     color: '#A3CFFF',
+    // backgroundColor: 'pink',
+    // position: 'absolute',
+    // padding: Metrics.rfv(10),
   },
   footerText1: {
     fontSize: Metrics.rfv(12),
@@ -413,6 +415,9 @@ const styles = StyleSheet.create({
   forgotPasswordText1: {
     fontSize: Metrics.rfv(14),
     color: '#A3CFFF',
+  },
+  icon: {
+    marginLeft: Metrics.rfv(10),
   },
 });
 
